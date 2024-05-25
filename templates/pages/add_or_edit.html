@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block content %}
+    <form method="post">
+        {% for form in forms %}
+            {% csrf_token %}
+            {% include "partials/crud_forms.html" with form=form.form %}
+        {% endfor %}
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+{% endblock %}
