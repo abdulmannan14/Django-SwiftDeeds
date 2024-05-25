@@ -221,6 +221,7 @@ def user_buy_product(request, product_id):
         return redirect('checkout-order-billing')
 
 
+
 def upload_file(request, product_id):
     user = request.user
     user_product = admin_models.UserProducts.objects.get(user=user.userprofile, id=product_id)
