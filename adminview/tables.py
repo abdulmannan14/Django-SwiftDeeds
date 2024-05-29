@@ -145,7 +145,7 @@ class CompletedProductsTable(tables.Table):
         upload_url = reverse('upload-file-user', kwargs={'product_id': record.product_id})
         return format_html(
             "<button class='btn btn-sm btn-primary' onclick='ShowFileModal({product_id})'>View</button>",
-            product_id=record.product_id
+            product_id=record.id
         )
 
 

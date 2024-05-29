@@ -5,11 +5,11 @@ from django.urls import reverse
 from get_set_work.settings import ADMIN_EMAILS
 
 # from . import models as result_models, utils as result_utils
-FROM_EMAIL = "mannanmaan1425@gmail.com"
-SENDER_NAME = "Get Set Work"
+FROM_EMAIL = "hello@swiftdeeds.com"
+SENDER_NAME = "SwiftDeeds"
 
 
-def get_register_payload(link, userprofile):
+def purchased_product_payload(email):
     return {
         "from": {
             "email": FROM_EMAIL
@@ -18,17 +18,36 @@ def get_register_payload(link, userprofile):
             {
                 "to": [
                     {
-                        "email": userprofile.user.email
+                        "email": email
                     }
                 ],
                 "dynamic_template_data": {
-                    "username": userprofile.user.get_full_name(),
-                    "url": link,
-                    "receipt": True,
+
                 }
             }
         ],
         "template_id": "d-f9c715d87075432881b5de901ea0f298"
+    }
+
+
+def approved_payload(email):
+    return {
+        "from": {
+            "email": FROM_EMAIL
+        },
+        "personalizations": [
+            {
+                "to": [
+                    {
+                        "email": email
+                    }
+                ],
+                "dynamic_template_data": {
+
+                }
+            }
+        ],
+        "template_id": "d-e67330205e1a4b2184f3e59f588df4d7"
     }
 
 
@@ -51,23 +70,20 @@ def get_resend_verification_payload(link, userprofile):
                 }
             }
         ],
-        "template_id": "d-8c8da8a10a534a58b591052147ef1713"
+        "template_id": " d-e67330205e1a4b2184f3e59f588df4d7"
     }
 
 
-def send_email(userprofile, base_url, type):
-    print("sending eamil to {}".format(userprofile.user.email))
-    url = "{}{}".format(base_url, reverse("verify-email", kwargs={"pk": userprofile.user.id}))
-    payload = None
-    if type == 'register':
-        payload = get_register_payload(url, userprofile)
-    elif type == 'resend verification':
-        payload = get_resend_verification_payload(url, userprofile)
-    elif type == 'new job':
-        payload = get_register_payload(url, userprofile)
+def send_email(email, final=None):
+    print("sending eamil to {}".format(email))
+    if final:
+        print("sending eamil to {}     final----".format(email))
+        payload = approved_payload(email)
+    else:
+        payload = purchased_product_payload(email)
     payload = json.dumps(payload)
     headers = {
-        'Authorization': 'Bearer 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',
+        'Authorization': 'Bearer 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',
         'Content-Type': 'application/json'
     }
     url = "https://api.sendgrid.com/v3/mail/send"

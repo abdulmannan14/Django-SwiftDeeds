@@ -135,11 +135,16 @@
             console.log(product_id)
             var input = document.createElement('input');
             input.type = 'file';
+            input.multiple = true; // Allow multiple file selection
+
             {#input.accept = 'image/*'; // Optional: Limit file selection to images#}
             input.onchange = function () {
-                var file = input.files[0];
+                var files = input.files;
                 var formData = new FormData();
-                formData.append('file', file);
+                for (var i = 0; i < files.length; i++) {
+                    formData.append('files[]', files[i]); // Append each file to FormData
+                }
+                {#formData.append('file', file);#}
                 formData.append('product_id', product_id); // Include the product ID in the FormData
                 fetch('/upload-file/' + product_id + '/', {
                     method: 'POST',

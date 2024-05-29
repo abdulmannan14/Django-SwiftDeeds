@@ -1,3 +1,5 @@
+import datetime
+
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
@@ -135,20 +137,30 @@ def open_orders(request):
 
 
 def fetch_files(request):
+    print("=========", request.GET.get('product_id'))
     userproducts = admin_models.UserProducts.objects.filter(id=request.GET.get('product_id')).last()
+    if not userproducts:
+        return JsonResponse({'files': []}, safe=False)
     files = userproducts.files.all()
     if not files:
         return JsonResponse({'files': []}, safe=False)
-    return JsonResponse({'files': [file.file.url for file in files]}, safe=False)
+    files = [file.file.url for file in files]
+    if userproducts.is_completed:
+        files = files + [userproducts.completed_final_file.url]
+        print("files======", files)
+    return JsonResponse({'files': files}, safe=False)
 
 
 def approve_order(request):
-    print("entere==============234")
     print("userproducts", request.POST.get('product_id'))
-    userproducts = get_object_or_404(admin_models.UserProducts, id=request.POST.get('product_id'))
+    print("thisi si hte file=====", request.FILES.get('file'))
+    userproducts = admin_models.UserProducts.objects.get(id=request.POST.get('product_id'))
     print("userproducts", userproducts)
+    userproducts.completed_final_file = request.FILES.get('file')
     userproducts.is_completed = True
+    userproducts.completed_on = datetime.datetime.now()
     userproducts.save()
+    resp = adminview_emails.send_email(userproducts.user.user.email, final=True)
     return JsonResponse({'success': True}, safe=False)
 
 

@@ -203,7 +203,7 @@ def user_buy_product(request, product_id):
     cancel_url = "{}://{}{}".format(request.scheme, request.get_host(),
                                     reverse('failed-order',
                                             kwargs={'slug': str(product_id) + "," + str(request.user.id)}))
-    stipe_secret_key = "sk_test_51PGKtcCU4q9m0okPsUbR4DnQOsYE9df4Mc5zWYLIp4XPqubLWTvo2tjvMK6l1h8ldezryfl64whKzkStIhoR43N600v2uKzFt0"
+    stipe_secret_key = "sk_test_51PLAvWFxIpw2nLNSZ71FAVWqZ0R8pwEhnld0yHL4EhH9GhpG7b5cgwMr2UUIs7RU1QWsgjdBONV7Scx49xAHPffY00wUYarCcI"
     try:
         stripe.api_key = stipe_secret_key
         checkout_session = stripe.checkout.Session.create(
@@ -215,18 +215,22 @@ def user_buy_product(request, product_id):
         )
 
         # print({'sessionUrl': checkout_session.url, 'sessionID': checkout_session.id})
+        from adminview import emails as adminview_emails
+        adminview_emails.send_email(request.user.email)
         return redirect(checkout_session.url)
+
     except Exception as e:
         messages.error(request, f"Something went wrong in Stripe!")
         return redirect('checkout-order-billing')
 
 
-
 def upload_file(request, product_id):
     user = request.user
     user_product = admin_models.UserProducts.objects.get(user=user.userprofile, id=product_id)
-    user_product.files.create(file=request.FILES['file'])
-    user_product.save()
+    files = request.FILES.getlist('files[]')
+    for file in files:
+        user_product.files.create(file=file)
+        user_product.save()
     return JsonResponse({'status': 'success', "success": True})
 
 

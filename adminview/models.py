@@ -30,7 +30,7 @@ class UserProducts(models.Model):
     completed_final_file = models.FileField(upload_to='user_product_files/', null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    completed_on = models.DateTimeField(auto_now=True)
+    completed_on = models.DateTimeField(null=True, blank=True)
 
     def __str__(self):
         return self.user.user.username
