@@ -35,7 +35,7 @@ def account_register(request):
             user_obj.set_password(password)
             user_obj.save()
             userprofile = register_models.UserProfile.objects.create(user=user_obj, email_verified=False)
-            adminview_emails.send_email(userprofile, "https://{}".format(request.get_host()), 'register')
+            # adminview_emails.send_email(userprofile, "https://{}".format(request.get_host()), 'register')
             messages.success(request, "Signup Successfully!")
             return redirect("login")
         else:
