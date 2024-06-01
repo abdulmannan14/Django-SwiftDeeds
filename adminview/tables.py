@@ -65,7 +65,7 @@ class ProductsTable(tables.Table):
 
 
 class OpenProductsTable(tables.Table):
-    add_file = tables.Column(empty_values=())  # Define the custom column
+    add_file = tables.Column(empty_values=(), verbose_name='Add Files')  # Define the custom column
     product_price = tables.Column(verbose_name='Price', empty_values=())  # Custom column for Product price
     product_description = tables.Column(verbose_name='Description',
                                         empty_values=())  # Custom column for Product description
@@ -81,7 +81,7 @@ class OpenProductsTable(tables.Table):
         # Assuming there's a URL pattern named 'upload-file' that handles file uploads
         upload_url = reverse('upload-file-user', kwargs={'product_id': record.product_id})
         return format_html(
-            "<button class='btn btn-sm btn-primary' onclick='addFile({})'>Add</button>",
+            "<button class='btn btn-sm btn-primary' onclick='addFile({})'>Add Files</button>",
             record.id
         )
 
@@ -122,7 +122,7 @@ class OpenOrders(tables.Table):
 
 class CompletedProductsTable(tables.Table):
     see_files = tables.Column(empty_values=())  # Define the custom column
-
+    view_report = tables.Column(empty_values=())  # Define the custom column
     product_price = tables.Column(verbose_name='Price', empty_values=())  # Custom column for Product price
     product_description = tables.Column(verbose_name='Description',
                                         empty_values=())  # Custom column for Product description
@@ -147,6 +147,15 @@ class CompletedProductsTable(tables.Table):
             "<button class='btn btn-sm btn-primary' onclick='ShowFileModal({product_id})'>View</button>",
             product_id=record.id
         )
+
+    def render_view_report(self, record):
+        if record.completed_final_file:
+            return format_html(
+                "<a class='btn btn-sm btn-primary' target=blank href={}>View Report</a>",
+                record.completed_final_file.url
+
+            )
+        return "No Report yet"
 
 
 class OpenOrdersAdmin(tables.Table):
@@ -181,4 +190,40 @@ class OpenOrdersAdmin(tables.Table):
         return format_html(
             "<button class='btn btn-sm btn-success' onclick='approveOrder({product_id})'>Approve Order</button>",
             product_id=record.id
+        )
+
+
+class CompletedProductsTableUser(tables.Table):
+    see_files = tables.Column(empty_values=())  # Define the custom column
+    view_report = tables.Column(empty_values=())  # Define the custom column
+    product_price = tables.Column(verbose_name='Price', empty_values=())  # Custom column for Product price
+    product_description = tables.Column(verbose_name='Description',
+                                        empty_values=())  # Custom column for Product description
+    created_at = tables.Column(verbose_name='Created On', empty_values=())  # Custom column for Product description
+
+    class Meta:
+        attrs = {"class": 'table table-stripped data-table table-xs',
+                 'data-add-url': 'Url here'}
+        model = admin_models.UserProducts
+        fields = ['product', 'product_price', 'product_description', 'is_completed', 'created_at', 'completed_on']
+
+    def render_product_price(self, record):
+        return format_html('${}', record.product.price)  # Access price field of the related Product
+
+    def render_product_description(self, record):
+        return record.product.description  # Access description field
+
+    def render_see_files(self, record):
+        # Assuming there's a URL pattern named 'upload-file' that handles file uploads
+        upload_url = reverse('upload-file-user', kwargs={'product_id': record.product_id})
+        return format_html(
+            "<button class='btn btn-sm btn-primary' onclick='ShowFileModal({product_id})'>View</button>",
+            product_id=record.id
+        )
+
+    def render_view_report(self, record):
+        return format_html(
+            "<a class='btn btn-sm btn-primary' target=blank href={}>View Report</a>",
+            record.completed_final_file.url
+
         )

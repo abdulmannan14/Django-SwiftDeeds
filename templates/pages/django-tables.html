@@ -154,7 +154,7 @@
                     }
                 }).then(response => {
                     if (response.ok) {
-                        alert('File uploaded successfully!');
+                        alert('Files uploaded successfully! The Order is in Processing state now.');
                     } else {
                         alert('Failed to upload file.');
                     }
@@ -184,7 +184,6 @@
     <script>
         function ShowFileModal(product_id) {
 
-            console.log("oko====", product_id)
             $('#fileModal').show();
             $.ajax({
                 url: "{% url 'fetch-files-admin' %}?product_id=" + product_id,// Adjust URL to your Django view for fetching files
