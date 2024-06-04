@@ -25,34 +25,33 @@ def account_register(request):
     form = RegisterForm(request.POST or None)
     msg = None
     if request.method == "POST":
-        if form.is_valid():
-
-            first_name = form.cleaned_data.get("first_name")
-            last_name = form.cleaned_data.get("last_name")
-            username = form.cleaned_data.get("username")
-            email = form.cleaned_data.get("email")
-            password = form.cleaned_data.get("password")
-
-            user_obj = User.objects.filter(email=email).first()
-            if user_obj:
-                messages.error(request, "Email already exists!")
-                return redirect("register")
-            user_obj = User.objects.filter(username=username).first()
-            if user_obj:
-                messages.error(request, "Username already exists!")
-                return redirect("register")
-            user_obj = User.objects.create(first_name=first_name, last_name=last_name, username=username, email=email)
-            user_obj.set_password(password)
-            user_obj.save()
-            userprofile = register_models.UserProfile.objects.create(user=user_obj, email_verified=True)
-            # adminview_emails.send_email(userprofile, "https://{}".format(request.get_host()), 'register')
-            messages.success(request, "Signup Successfully!")
-            return redirect("login")
-        else:
-            messages.error(request, "Error validating the form")
+        print("=======1====")
+        print("=======11====")
+        first_name = request.POST.get("firstName")
+        last_name = request.POST.get("lastName")
+        username = request.POST.get("username")
+        email = request.POST.get("email")
+        password = request.POST.get("password")
+        print("=======111====")
+        user_obj = User.objects.filter(email=email).first()
+        if user_obj:
+            messages.error(request, "Email already exists!")
+            return redirect("register")
+        print("=======1111====")
+        user_obj = User.objects.filter(username=username).first()
+        if user_obj:
+            messages.error(request, "Username already exists!")
+            return redirect("register")
+        user_obj = User.objects.create(first_name=first_name, last_name=last_name, username=username, email=email)
+        user_obj.set_password(password)
+        user_obj.save()
+        userprofile = register_models.UserProfile.objects.create(user=user_obj, email_verified=True)
+        # adminview_emails.send_email(userprofile, "https://{}".format(request.get_host()), 'register')
+        messages.success(request, "Signup Successfully!")
+        return redirect("login")
     return render(request, "pages/sign-up.html",
                   {
-                      "form": form,
+                      # "form": form,
                       "msg": msg,
                       "title": "Signup",
                       "subtitle": "Add your Details",
