@@ -30,7 +30,9 @@
                 <div class="card mb-4">
                     {#                    {% include 'all/includes/card-header.html' %}#}
                     <div class="card-body px-0 pt-0 pb-2">
-                        {% render_table table %}
+                        <div class="table-container" style="overflow-x: auto">
+                            {% render_table table %}
+                        </div>
                     </div>
                 </div>
             </div>
@@ -50,6 +52,12 @@
 {% block javascripts %}
     <script>
         $(document).ready(function () {
+            $('.table th, .table td').css('text-align', 'center');
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+
             $('.data-table').DataTable({});
             $("th>a").attr("href", "javascript:;")
         });

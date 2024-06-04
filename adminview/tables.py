@@ -66,6 +66,7 @@ class ProductsTable(tables.Table):
 
 class OpenProductsTable(tables.Table):
     add_file = tables.Column(empty_values=(), verbose_name='Add Files')  # Define the custom column
+    uploaded_files = tables.Column(empty_values=(), verbose_name='Uploaded Files')  # Define the custom column
     product_price = tables.Column(verbose_name='Price', empty_values=())  # Custom column for Product price
     product_description = tables.Column(verbose_name='Description',
                                         empty_values=())  # Custom column for Product description
@@ -76,6 +77,14 @@ class OpenProductsTable(tables.Table):
                  'data-add-url': 'Url here'}
         model = admin_models.UserProducts
         fields = ['product', 'product_price', 'product_description', 'is_completed', 'created_at', 'completed_on']
+
+    def render_uploaded_files(self, record):
+        files = record.files.all()
+        new_files = ''
+        if files:
+            for file in files:
+                new_files += str(file).split('/')[-1] + ', '
+        return format_html(new_files)
 
     def render_add_file(self, record):
         # Assuming there's a URL pattern named 'upload-file' that handles file uploads
