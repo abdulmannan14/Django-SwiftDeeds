@@ -83,7 +83,7 @@ class OpenProductsTable(tables.Table):
         new_files = ''
         if files:
             for file in files:
-                new_files += str(file).split('/')[-1] + ', '
+                new_files += str(file).split('/')[-1] + '| '
         return format_html(new_files)
 
     def render_add_file(self, record):
