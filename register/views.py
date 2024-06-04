@@ -26,15 +26,25 @@ def account_register(request):
     msg = None
     if request.method == "POST":
         if form.is_valid():
+
             first_name = form.cleaned_data.get("first_name")
             last_name = form.cleaned_data.get("last_name")
             username = form.cleaned_data.get("username")
             email = form.cleaned_data.get("email")
             password = form.cleaned_data.get("password")
+
+            user_obj = User.objects.filter(email=email).first()
+            if user_obj:
+                messages.error(request, "Email already exists!")
+                return redirect("register")
+            user_obj = User.objects.filter(username=username).first()
+            if user_obj:
+                messages.error(request, "Username already exists!")
+                return redirect("register")
             user_obj = User.objects.create(first_name=first_name, last_name=last_name, username=username, email=email)
             user_obj.set_password(password)
             user_obj.save()
-            userprofile = register_models.UserProfile.objects.create(user=user_obj, email_verified=False)
+            userprofile = register_models.UserProfile.objects.create(user=user_obj, email_verified=True)
             # adminview_emails.send_email(userprofile, "https://{}".format(request.get_host()), 'register')
             messages.success(request, "Signup Successfully!")
             return redirect("login")
@@ -62,9 +72,9 @@ def login_view(request):
             password = request.POST.get("password")
             user = authenticate(request, username=username, password=password)
             userprofile = register_models.UserProfile.objects.filter(user=user).last()
-            if userprofile and not userprofile.email_verified:
-                messages.error(request, "Email is not verified, Please verify email First")
-                return redirect('login')
+            # if userprofile:
+            #     messages.error(request, "Email is not verified, Please verify email First")
+            #     return redirect('login')
             if user is not None:
                 login(request, user)
                 if user.is_staff:
@@ -169,7 +179,7 @@ def completed_orders(request):
         "title": "List of Open Orders",
         "page_name": "Open Orders",
         "queryset": open_orders,
-        "table": admin_tables.CompletedProductsTable(open_orders),
+        "table": admin_tables.CompletedProductsTableUser(open_orders),
         "header": {
             "links": [
 
@@ -242,7 +252,7 @@ def success_order(request, slug):
     user_product.is_completed = False
     user_product.save()
 
-    return redirect('user-dashboard')
+    return redirect('user-open-ordersg')
 
 
 def failed_order(request, slug):
