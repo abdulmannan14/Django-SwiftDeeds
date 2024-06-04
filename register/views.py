@@ -252,7 +252,7 @@ def success_order(request, slug):
     user_product.is_completed = False
     user_product.save()
 
-    return redirect('user-open-ordersg')
+    return redirect('user-open-orders')
 
 
 def failed_order(request, slug):
