@@ -160,8 +160,10 @@
                     headers: {
                         'X-CSRFToken': getCookie('csrftoken') // Include CSRF token in the headers
                     }
+
                 }).then(response => {
                     if (response.ok) {
+                        window.location.reload();
                         alert('Files uploaded successfully! The Order is in Processing state now.');
                     } else {
                         alert('Failed to upload file.');
@@ -171,6 +173,7 @@
                 });
             };
             input.click();
+
         }
 
         // Function to get CSRF token from cookies
@@ -207,6 +210,7 @@
                     console.error('Error fetching files:', error);
                 }
             });
+
             // Close the modal when the user clicks on <span> (x)
             $('.close').on('click', function () {
                 $('#fileModal').hide();
@@ -218,6 +222,7 @@
                     $('#fileModal').hide();
                 }
             });
+
         }
     </script>
 
