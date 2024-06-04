@@ -25,6 +25,31 @@
     <!-- Nepcha Analytics (nepcha.com) -->
     <!-- Nepcha is a easy-to-use web analytics. No cookies and fully compliant with GDPR, CCPA and PECR. -->
     <script defer data-site="YOUR_DOMAIN_HERE" src="https://api.nepcha.com/js/nepcha-analytics.js"></script>
+    <style>
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        .form-group input:focus {
+            border-color: #007BFF;
+            outline: none;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+        }
+    </style>
 </head>
 
 <body class="bg-gray-200">
@@ -67,11 +92,23 @@
                         <div class="card-body">
                             <form class="text-start" method="post">
                                 {% csrf_token %}
-                                {% include "partials/forms.html" with form=form %}
-                                <div class="text-center">
+                                <form>
+                                    <div class="form-group">
+                                        <label for="username">Username</label>
+                                        <input type="text" id="username" name="username" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="password">Password</label>
+                                        <input type="password" id="password" name="password" required>
+                                    </div>
+{#                                    <button type="submit" class="btn">Sign In</button>#}
+                                    <div class="text-center">
                                     <button type="submit" class="btn bg-gradient-primary w-100 my-4 mb-2">Sign in
                                     </button>
                                 </div>
+                                </form>
+                                {#                                {% include "partials/forms.html" with form=form %}#}
+
                                 <p class="mt-4 text-sm text-center">
                                     Don't have an account?
                                     <a href="{% url 'register' %}" class="text-primary text-gradient font-weight-bold">Sign
