@@ -146,7 +146,7 @@ def fetch_files(request):
         return JsonResponse({'files': []}, safe=False)
     files = [file.file.url for file in files]
     if userproducts.is_completed:
-        files = files + [userproducts.completed_final_file.url]
+        files = files
         print("files======", files)
     return JsonResponse({'files': files}, safe=False)
 

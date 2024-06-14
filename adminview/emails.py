@@ -2,7 +2,7 @@ from threading import Thread
 import json
 import requests
 from django.urls import reverse
-from get_set_work.settings import ADMIN_EMAILS
+from SwiftDeeds.settings import ADMIN_EMAILS
 
 # from . import models as result_models, utils as result_utils
 FROM_EMAIL = "hello@swiftdeeds.com"

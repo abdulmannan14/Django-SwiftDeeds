@@ -1,5 +1,5 @@
 """
-ASGI config for get_set_work project.
+ASGI config for SwiftDeeds project.
 
 It exposes the ASGI callable as a module-level variable named ``application``.
 
@@ -11,6 +11,6 @@ import os
 
 from django.core.asgi import get_asgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'get_set_work.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'SwiftDeeds.settings')
 
 application = get_asgi_application()

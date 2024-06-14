@@ -1,4 +1,4 @@
-/*!
+/*/
 
 =========================================================
 * Material Dashboard 2 - v3.1.0
@@ -15,7 +15,7 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
 
-/*!
+/*/
    * Bootstrap  v5.2.3 (https://getbootstrap.com/)
    * Copyright 2011-2022 The Bootstrap Authors
    * Copyright 2011-2022 Twitter, Inc.
@@ -20316,7 +20316,7 @@ fieldset:disabled .btn {
   }
 }
 
-/*!
+/*/
 
 =========================================================
 * Material Dashboard 2 - v3.1.0
@@ -22274,38 +22274,38 @@ body.dark-version {
   background-size: 100% 100%, 100% 100%;
 }
 
-.input-group.input-group-dynamic .form-control[disabled],
-.input-group.input-group-static .form-control[disabled] {
-  cursor: not-allowed;
-  background-image: linear-gradient(0deg, #e91e63 2px, rgba(156, 39, 176, 0) 0), linear-gradient(0deg, #f0f2f5 1px, rgba(209, 209, 209, 0) 0) !important;
-}
+/*.input-group.input-group-dynamic .form-control[disabled],*/
+/*.input-group.input-group-static .form-control[disabled] {*/
+/*  cursor: not-allowed;*/
+/*  background-image: linear-gradient(0deg, #e91e63 2px, rgba(156, 39, 176, 0) 0), linear-gradient(0deg, #f0f2f5 1px, rgba(209, 209, 209, 0) 0) !important;*/
+/*}*/
 
-.input-group.input-group-dynamic .input-group-text,
-.input-group.input-group-static .input-group-text {
-  border-right: 0;
-}
+/*.input-group.input-group-dynamic .input-group-text,*/
+/*.input-group.input-group-static .input-group-text {*/
+/*  border-right: 0;*/
+/*}*/
 
-.input-group.input-group-dynamic.is-focused .form-label,
-.input-group.input-group-dynamic.is-filled .form-label,
-.input-group.input-group-static.is-focused .form-label,
-.input-group.input-group-static.is-filled .form-label {
-  font-size: 0.6875rem !important;
-}
+/*.input-group.input-group-dynamic.is-focused .form-label,*/
+/*.input-group.input-group-dynamic.is-filled .form-label,*/
+/*.input-group.input-group-static.is-focused .form-label,*/
+/*.input-group.input-group-static.is-filled .form-label {*/
+/*  font-size: 0.6875rem !important;*/
+/*}*/
 
-.input-group.input-group-dynamic.is-focused .form-label,
-.input-group.input-group-static.is-focused .form-label {
-  top: -0.7rem;
-}
+/*.input-group.input-group-dynamic.is-focused .form-label,*/
+/*.input-group.input-group-static.is-focused .form-label {*/
+/*  top: -0.7rem;*/
+/*}*/
 
-.input-group.input-group-dynamic.is-focused label,
-.input-group.input-group-static.is-focused label {
-  color: #e91e63;
-}
+/*.input-group.input-group-dynamic.is-focused label,*/
+/*.input-group.input-group-static.is-focused label {*/
+/*  color: #e91e63;*/
+/*}*/
 
-.input-group.input-group-dynamic.is-focused.is-valid label,
-.input-group.input-group-static.is-focused.is-valid label {
-  color: #4CAF50;
-}
+/*.input-group.input-group-dynamic.is-focused.is-valid label,*/
+/*.input-group.input-group-static.is-focused.is-valid label {*/
+/*  color: #4CAF50;*/
+/*}*/
 
 .input-group.input-group-dynamic.is-focused.is-valid .form-control,
 .input-group.input-group-dynamic.is-focused.is-valid .form-control:focus,
