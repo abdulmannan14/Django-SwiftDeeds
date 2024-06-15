@@ -67,6 +67,7 @@ class ProductsTable(tables.Table):
 class OpenProductsTable(tables.Table):
     add_file = tables.Column(empty_values=(), verbose_name='Add Files')  # Define the custom column
     uploaded_files = tables.Column(empty_values=(), verbose_name='Uploaded Files')  # Define the custom column
+    order_number = tables.Column(verbose_name='Order Number', empty_values=()) # Custom column for product number
     product_price = tables.Column(verbose_name='Price', empty_values=())  # Custom column for Product price
     product_description = tables.Column(verbose_name='Description',
                                         empty_values=())  # Custom column for Product description
@@ -76,8 +77,11 @@ class OpenProductsTable(tables.Table):
         attrs = {"class": 'table table-stripped data-table table-xs',
                  'data-add-url': 'Url here'}
         model = admin_models.UserProducts
-        fields = ['product', 'product_price', 'product_description', 'is_completed', 'created_at', 'completed_on']
+        fields = ['product', 'order_number', 'product_price', 'product_description', 'is_completed', 'created_at', 'completed_on']
 
+    def render_order_number(self, record):
+        return record.id 
+    
     def render_uploaded_files(self, record):
         files = record.files.all()
         new_files = ''
@@ -103,6 +107,7 @@ class OpenProductsTable(tables.Table):
 
 class OpenOrders(tables.Table):
     add_file = tables.Column(empty_values=())  # Define the custom column
+    order_number = tables.Column(verbose_name='Order Number', empty_values=()) # Custom column for product number
     product_price = tables.Column(verbose_name='Price', empty_values=())  # Custom column for Product price
     product_description = tables.Column(verbose_name='Description',
                                         empty_values=())  # Custom column for Product description
@@ -112,8 +117,11 @@ class OpenOrders(tables.Table):
         attrs = {"class": 'table table-stripped data-table table-xs',
                  'data-add-url': 'Url here'}
         model = admin_models.UserProducts
-        fields = ['product', 'product_price', 'product_description', 'is_completed', 'created_at', 'completed_on']
+        fields = ['product', 'order_number' 'product_price', 'product_description', 'is_completed', 'created_at', 'completed_on']
 
+    def render_order_number(self, record):
+        return record.id 
+    
     def render_add_file(self, record):
         # Assuming there's a URL pattern named 'upload-file' that handles file uploads
         upload_url = reverse('upload-file-user', kwargs={'product_id': record.id})
@@ -132,7 +140,7 @@ class OpenOrders(tables.Table):
 class CompletedProductsTable(tables.Table):
     see_files = tables.Column(empty_values=())  # Define the custom column
     view_report = tables.Column(empty_values=())  # Define the custom column
-    product_number = tables.Column(verbose_name='Product Number', empty_values=()) # Custom column for product number
+    order_number = tables.Column(verbose_name='Order Number', empty_values=()) # Custom column for product number
     product_price = tables.Column(verbose_name='Price', empty_values=())  # Custom column for Product price
     product_description = tables.Column(verbose_name='Description',
                                         empty_values=())  # Custom column for Product description
@@ -143,9 +151,9 @@ class CompletedProductsTable(tables.Table):
         attrs = {"class": 'table table-stripped data-table table-xs',
                  'data-add-url': 'Url here'}
         model = admin_models.UserProducts
-        fields = ['product', 'user', 'product_number', 'product_price', 'product_description', 'is_completed', 'created_at', 'completed_on']
+        fields = ['product', 'user', 'order_number', 'product_price', 'product_description', 'is_completed', 'created_at', 'completed_on']
 
-    def render_product_number(self, record):
+    def render_order_number(self, record):
         return record.id
     
     def render_product_price(self, record):
@@ -175,7 +183,7 @@ class CompletedProductsTable(tables.Table):
 class OpenOrdersAdmin(tables.Table):
     see_files = tables.Column(empty_values=())  # Define the custom column
     approve_order = tables.Column(empty_values=())  # Define the custom column
-    product_number = tables.Column(verbose_name='Product Number', empty_values=()) # Custom column for product number
+    order_number = tables.Column(verbose_name='Order Number', empty_values=()) # Custom column for product number
     product_price = tables.Column(verbose_name='Price', empty_values=())  # Custom column for Product price
     product_description = tables.Column(verbose_name='Description',
                                         empty_values=())  # Custom column for Product description
@@ -185,9 +193,9 @@ class OpenOrdersAdmin(tables.Table):
         attrs = {"class": 'table table-stripped data-table table-xs',
                  'data-add-url': 'Url here'}
         model = admin_models.UserProducts
-        fields = ['product', 'user', 'product_number', 'product_price', 'product_description', 'is_completed', 'created_at', 'completed_on']
+        fields = ['product', 'user', 'order_number', 'product_price', 'product_description', 'is_completed', 'created_at', 'completed_on']
 
-    def render_product_number(self, record):
+    def render_order_number(self, record):
         return record.id
     
     def render_see_files(self, record):
@@ -214,6 +222,7 @@ class OpenOrdersAdmin(tables.Table):
 class CompletedProductsTableUser(tables.Table):
     see_files = tables.Column(empty_values=())  # Define the custom column
     view_report = tables.Column(empty_values=())  # Define the custom column
+    order_number = tables.Column(verbose_name='Order Number', empty_values=()) # Custom column for product number
     product_price = tables.Column(verbose_name='Price', empty_values=())  # Custom column for Product price
     product_description = tables.Column(verbose_name='Description',
                                         empty_values=())  # Custom column for Product description
@@ -223,8 +232,11 @@ class CompletedProductsTableUser(tables.Table):
         attrs = {"class": 'table table-stripped data-table table-xs',
                  'data-add-url': 'Url here'}
         model = admin_models.UserProducts
-        fields = ['product', 'product_price', 'product_description', 'is_completed', 'created_at', 'completed_on']
+        fields = ['product', 'order_number', 'product_price', 'product_description', 'is_completed', 'created_at', 'completed_on']
 
+    def render_order_number(self, record):
+        return record.id
+    
     def render_product_price(self, record):
         return format_html('${}', record.product.price)  # Access price field of the related Product
 
