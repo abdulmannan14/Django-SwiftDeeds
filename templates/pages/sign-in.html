@@ -49,10 +49,40 @@
             outline: none;
             box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
         }
+
+        .message-container {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            z-index: 1000;
+        }
+
+        .message {
+            padding: 10px 20px;
+            border-radius: 5px;
+            margin: 5px 0;
+            color: #fff;
+            display: none;
+        }
+
+        .message.success {
+            background-color: #4CAF50; /* Green */
+        }
+
+        .message.error {
+            background-color: #f44336; /* Red */
+        }
     </style>
 </head>
 
 <body class="bg-gray-200">
+<div class="message-container">
+    {% if messages %}
+        {% for message in messages %}
+            <div class="message {{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+</div>
 <div class="container position-sticky z-index-sticky top-0">
     <div class="row">
         <div class="col-12">
@@ -101,11 +131,11 @@
                                         <label for="password">Password</label>
                                         <input type="password" id="password" name="password" required>
                                     </div>
-{#                                    <button type="submit" class="btn">Sign In</button>#}
+                                    {#                                    <button type="submit" class="btn">Sign In</button>#}
                                     <div class="text-center">
-                                    <button type="submit" class="btn bg-gradient-primary w-100 my-4 mb-2">Sign in
-                                    </button>
-                                </div>
+                                        <button type="submit" class="btn bg-gradient-primary w-100 my-4 mb-2">Sign in
+                                        </button>
+                                    </div>
                                 </form>
                                 {#                                {% include "partials/forms.html" with form=form %}#}
 
@@ -178,6 +208,17 @@
 <script async defer src="https://buttons.github.io/buttons.js"></script>
 <!-- Control Center for Material Dashboard: parallax effects, scripts for the example pages etc -->
 <script src="{% static 'assets/js/material-dashboard.min.js?v=3.1.0' %}"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const messages = document.querySelectorAll('.message');
+        messages.forEach(function (message) {
+            message.style.display = 'block';
+            setTimeout(function () {
+                message.style.display = 'none';
+            }, 5000); // 5 seconds
+        });
+    });
+</script>
 </body>
 
 </html>

@@ -1,4 +1,3 @@
-from django.contrib import messages
 from django.contrib.auth import logout, authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
@@ -9,7 +8,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.models import User
 from .forms import LoginForm, RegisterForm, UserForm, UserProfileForm
 from register import models as register_models
-
+from django.contrib import messages
 from adminview import emails as adminview_emails, models as admin_models, tables as admin_tables, forms as admin_forms
 import stripe
 

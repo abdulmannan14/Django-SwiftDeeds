@@ -169,6 +169,7 @@ class CompletedProductsTable(tables.Table):
 
 class OpenOrdersAdmin(tables.Table):
     see_files = tables.Column(empty_values=())  # Define the custom column
+    username = tables.Column(empty_values=())  # Define the custom column
     approve_order = tables.Column(empty_values=())  # Define the custom column
     product_price = tables.Column(verbose_name='Price', empty_values=())  # Custom column for Product price
     product_description = tables.Column(verbose_name='Description',
@@ -179,7 +180,8 @@ class OpenOrdersAdmin(tables.Table):
         attrs = {"class": 'table table-stripped data-table table-xs',
                  'data-add-url': 'Url here'}
         model = admin_models.UserProducts
-        fields = ['product', 'product_price', 'product_description', 'is_completed', 'created_at', 'completed_on']
+        fields = ['id', 'username', 'product', 'product_price', 'product_description', 'is_completed', 'created_at',
+                  'completed_on']
 
     def render_see_files(self, record):
         # Assuming there's a URL pattern named 'upload-file' that handles file uploads
@@ -200,6 +202,9 @@ class OpenOrdersAdmin(tables.Table):
             "<button class='btn btn-sm btn-success' onclick='approveOrder({product_id})'>Approve Order</button>",
             product_id=record.id
         )
+
+    def render_username(self, record):
+        return record.user.user.username
 
 
 class CompletedProductsTableUser(tables.Table):
