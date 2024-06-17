@@ -132,12 +132,13 @@
             return false
         }
     </script>
-    {#    <script>#}
-    {#        document.getElementById('input_file').addEventListener('click', function () {#}
-    {#            addFile(your_product_id);#}
-    {#        });#}
-    {#    </script>#}
-    <!-- Add this script in your HTML template -->
+    
+    <!-- <script>
+    // {#        document.getElementById('input_file').addEventListener('click', function () {#}
+    // {#            addFile(your_product_id);#}
+    // {#        });#}
+    </script>
+    //Add this script in your HTML template -->
     <script>
         function addFile(product_id) {
             console.log(product_id)
@@ -145,14 +146,14 @@
             input.type = 'file';
             input.multiple = true; // Allow multiple file selection
 
-            {#input.accept = 'image/*'; // Optional: Limit file selection to images#}
+            //input.accept = 'image/*'; // Optional: Limit file selection to images#}
             input.onchange = function () {
                 var files = input.files;
                 var formData = new FormData();
                 for (var i = 0; i < files.length; i++) {
                     formData.append('files[]', files[i]); // Append each file to FormData
                 }
-                {#formData.append('file', file);#}
+                // {#formData.append('file', file);#}
                 formData.append('product_id', product_id); // Include the product ID in the FormData
                 fetch('/upload-file/' + product_id + '/', {
                     method: 'POST',
@@ -164,7 +165,7 @@
                 }).then(response => {
                     if (response.ok) {
                         window.location.reload();
-                        alert('Files uploaded successfully! The Order is in Processing state now.');
+                        alert('Files uploaded successfully! Please add all the files required for this property');
                     } else {
                         alert('Failed to upload file.');
                     }
@@ -248,8 +249,10 @@
                         'X-CSRFToken': getCookie('csrftoken') // Include CSRF token in the headers
                     },
                     success: function (response) {
+                        window.location.reload();
                         alert('Order approved and file uploaded successfully!');
                         // Optionally, you can refresh the page or update the table row to reflect changes
+                        
                     },
                     error: function (error) {
                         console.error('Error:', error);
@@ -275,6 +278,7 @@
             }
             return cookieValue;
         }
+
     </script>
 
 

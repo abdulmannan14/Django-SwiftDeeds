@@ -239,7 +239,7 @@ def upload_file(request, product_id):
     for file in files:
         user_product.files.create(file=file)
         user_product.save()
-    return JsonResponse({'status': 'success', "success": True})
+    return JsonResponse({'status': 'success', 'message': "File(s) uploaded successfully! Please continue to add all the files necessary for this property", "success": True})
 
 
 def success_order(request, slug):
