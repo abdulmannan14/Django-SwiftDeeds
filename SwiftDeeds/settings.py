@@ -138,3 +138,8 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 ADMIN_EMAILS = 'mannanmaan1425@gmail.com'
+
+# Email Configuration
+EMAIL_BACKEND = "sendgrid_backend.SendgridBackend"
+SENDGRID_API_KEY = "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"
+SENDGRID_FROM_EMAIL = "northassetltd@gmail.com"

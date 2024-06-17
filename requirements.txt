@@ -10,3 +10,4 @@ sqlparse==0.4.4
 urllib3==1.26.13
 whitenoise==6.4.0
 stripe==9.11.0
+sendgrid==6.11.0

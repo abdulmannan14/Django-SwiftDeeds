@@ -1,4 +1,5 @@
-import datetime
+from datetime import datetime
+from django.utils import timezone
 
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -6,9 +7,14 @@ from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
 
+from django.conf import settings
+
 from register import models as register_models
 from . import tables as admin_tables, forms as admin_forms, emails as adminview_emails, models as admin_models
 
+import sendgrid
+from sendgrid import SendGridAPIClient
+from sendgrid.helpers.mail import Mail
 
 # Create your views here.
 
@@ -138,30 +144,57 @@ def open_orders(request):
 
 def fetch_files(request):
     print("=========", request.GET.get('product_id'))
-    userproducts = admin_models.UserProducts.objects.filter(id=request.GET.get('product_id')).last()
-    if not userproducts:
+    userproduct = admin_models.UserProducts.objects.filter(id=request.GET.get('product_id')).last()
+    if not userproduct:
         return JsonResponse({'files': []}, safe=False)
-    files = userproducts.files.all()
+    files = userproduct.files.all()
     if not files:
         return JsonResponse({'files': []}, safe=False)
     files = [file.file.url for file in files]
-    if userproducts.is_completed:
+    if userproduct.is_completed:
         files = files
         print("files======", files)
     return JsonResponse({'files': files}, safe=False)
 
 
 def approve_order(request):
-    print("userproducts", request.POST.get('product_id'))
-    print("thisi si hte file=====", request.FILES.get('file'))
-    userproducts = admin_models.UserProducts.objects.get(id=request.POST.get('product_id'))
-    print("userproducts", userproducts)
-    userproducts.completed_final_file = request.FILES.get('file')
-    userproducts.is_completed = True
-    userproducts.completed_on = datetime.datetime.now()
-    userproducts.save()
-    resp = adminview_emails.send_email(userproducts.user.user.email, final=True)
-    return JsonResponse({'success': True}, safe=False)
+    if request.method == 'POST':
+        
+        try:
+            print("userproduct", request.POST.get('product_id'))
+            print("this is the file=====", request.FILES.get('file'))
+            product_id = request.POST.get('product_id')
+            file = request.FILES.get('file')
+
+            userproduct = admin_models.UserProducts.objects.get(id=product_id)
+            print("userproduct", userproduct)
+            userproduct.completed_final_file = file
+            userproduct.is_completed = True
+            userproduct.completed_on = timezone.now()
+            print("completion date set!")
+            userproduct.save()
+            print("User product saved!")
+            print(settings.SENDGRID_API_KEY)
+
+            sg = SendGridAPIClient(api_key=settings.SENDGRID_API_KEY)
+            email = Mail(
+                    from_email=settings.SENDGRID_FROM_EMAIL,
+                    to_emails=userproduct.user.user.email,
+                    subject='Your order has been approved',
+                    html_content='<p>Your order has been approved successfully. Please log into the site and check your "Completed Orders" tab to view the report</p>'
+                )
+            response = sg.send(email)
+            print("Email sent:", response.status_code, response.body)
+
+            return JsonResponse({'success': True}, safe=False)
+        except admin_models.UserProducts.DoesNotExist:
+            return JsonResponse({'status': 'error', 'message': 'Product not found'}, status=404)
+        except sendgrid.exceptions.SendGridException as e:
+            print(f"SendGrid error: {e}")
+            return JsonResponse({'status': 'error', 'message': 'Failed to send email. Please check your SendGrid configuration.'}, status=500)
+        except Exception as e:
+            return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
+    return JsonResponse({'status': 'error', 'message': 'Invalid request method'}, status=400)
 
 
 def completed_order(request):

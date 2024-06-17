@@ -165,7 +165,7 @@
                 }).then(response => {
                     if (response.ok) {
                         window.location.reload();
-                        alert('Files uploaded successfully! The Order is in Processing state now.');
+                        alert('Files uploaded successfully! Please add all the files required for this property');
                     } else {
                         alert('Failed to upload file.');
                     }
@@ -249,8 +249,10 @@
                         'X-CSRFToken': getCookie('csrftoken') // Include CSRF token in the headers
                     },
                     success: function (response) {
+                        window.location.reload();
                         alert('Order approved and file uploaded successfully!');
                         // Optionally, you can refresh the page or update the table row to reflect changes
+                        
                     },
                     error: function (error) {
                         console.error('Error:', error);
@@ -276,6 +278,7 @@
             }
             return cookieValue;
         }
+
     </script>
 
 
