@@ -182,7 +182,6 @@ class CompletedProductsTable(tables.Table):
 
 class OpenOrdersAdmin(tables.Table):
     see_files = tables.Column(empty_values=())  # Define the custom column
-    username = tables.Column(empty_values=())  # Define the custom column
     approve_order = tables.Column(empty_values=())  # Define the custom column
     order_number = tables.Column(verbose_name='Order Number', empty_values=()) # Custom column for product number
     product_price = tables.Column(verbose_name='Price', empty_values=())  # Custom column for Product price

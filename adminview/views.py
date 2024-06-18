@@ -158,43 +158,16 @@ def fetch_files(request):
 
 
 def approve_order(request):
-    if request.method == 'POST':
-        
-        try:
-            print("userproduct", request.POST.get('product_id'))
-            print("this is the file=====", request.FILES.get('file'))
-            product_id = request.POST.get('product_id')
-            file = request.FILES.get('file')
-
-            userproduct = admin_models.UserProducts.objects.get(id=product_id)
-            print("userproduct", userproduct)
-            userproduct.completed_final_file = file
-            userproduct.is_completed = True
-            userproduct.completed_on = timezone.now()
-            print("completion date set!")
-            userproduct.save()
-            print("User product saved!")
-            print(settings.SENDGRID_API_KEY)
-
-            sg = SendGridAPIClient(api_key=settings.SENDGRID_API_KEY)
-            email = Mail(
-                    from_email=settings.SENDGRID_FROM_EMAIL,
-                    to_emails=userproduct.user.user.email,
-                    subject='Your order has been approved',
-                    html_content='<p>Your order has been approved successfully. Please log into the site and check your "Completed Orders" tab to view the report</p>'
-                )
-            response = sg.send(email)
-            print("Email sent:", response.status_code, response.body)
-
-            return JsonResponse({'success': True}, safe=False)
-        except admin_models.UserProducts.DoesNotExist:
-            return JsonResponse({'status': 'error', 'message': 'Product not found'}, status=404)
-        except sendgrid.exceptions.SendGridException as e:
-            print(f"SendGrid error: {e}")
-            return JsonResponse({'status': 'error', 'message': 'Failed to send email. Please check your SendGrid configuration.'}, status=500)
-        except Exception as e:
-            return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
-    return JsonResponse({'status': 'error', 'message': 'Invalid request method'}, status=400)
+    print("userproducts", request.POST.get('product_id'))
+    print("thisi si hte file=====", request.FILES.get('file'))
+    userproducts = admin_models.UserProducts.objects.get(id=request.POST.get('product_id'))
+    print("userproducts", userproducts)
+    userproducts.completed_final_file = request.FILES.get('file')
+    userproducts.is_completed = True
+    userproducts.completed_on = datetime.now()
+    userproducts.save()
+    resp = adminview_emails.send_email(userproducts.user.user.email, final=True)
+    return JsonResponse({'success': True}, safe=False)
 
 
 def completed_order(request):
